@@ -5,17 +5,29 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Wallet Info</h1>
-  <input type="text" id="walletAddress" class="walletAddress" placeholder="Enter wallet address">
-  <button id="fetch-btn">Fetch Info</button>
-  <div id="resultContainer">
-    <p>Token ID: <span id="token_id"></span></p>
-    <p>Delegate To: <span id="delegate_to"></span></p>
-    <p>Total Rewards: <span id="total_rewards"></span></p>
-    <p>Status: <span id="status"></span></p>
-    <p>Uptime Rate: <span id="uptime_rate"></span></p>
+  <a class="version"> v1.2</a>
+  <input type="text" class="walletAddress" placeholder="Enter wallet address" value="0x98d6f0938ab1fDb858d4a77e26aab91a9d308EE2">
+  <button class="fetch-btn">Fetch Info</button>
+  
+  <div class="resultContainer">
+    <h1>Wallet Info</h1>
+    <p>Token ID: <span class="token_id"></span></p>
+    <p>Delegate To: <span class="delegate_to"></span></p>
+    <p>Total Rewards: <span class="total_rewards"></span></p>
+    <p>Status: <span class="status"></span></p>
+    <p>Uptime Rate: <span class="uptime_rate"></span></p>
   </div>
-<a class="version"> v1.01</a>
+
+  <div class="nodeStatusContainer">
+    <h1>Node Status</h1>
+    <p>Node Address:<span class="nodeAddress"></span></p>
+    <p>Node Status: <span class="nodeStatus"></span></p>
+    <p>Voting Power: <span class="votingPower"></span></p>
+    <p>Recevied Delegations: <span class="receivedDelegations"></span></p>
+    <p>Commission: <span class="nodeCommission"></span></p>
+    <p>Uptime Rate: <span class="nodeUptimeRate"></span></p>
+  </div>
+
   <script src="app.js"></script>
 </body>
 </html>
