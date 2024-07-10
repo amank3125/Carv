@@ -60,7 +60,7 @@ fetchBtn.addEventListener('click',  () => {
           delegateAddress=data.data.license.delegation_infos[0].delegate_to;
           for(i=0;i<data.data.verifier_list.length;i++){
             if(delegateAddress==data.data.verifier_list[i].address){
-              console.log(data.data.verifier_list[i]);
+              nodeAddress.textContent=delegateAddress;
               nodeStatus.textContent=data.data.verifier_list[i].status;
               votingPower.textContent=data.data.verifier_list[i].voting_power;
               receivedDelegations.textContent=data.data.verifier_list[i].received_delegations;
