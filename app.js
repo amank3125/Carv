@@ -19,7 +19,7 @@ fetchBtn.addEventListener('click', async () => {
       const data = await response.json();
       console.log(data);
   
-      tokenIdSpan.textContent = `Token ID: ${data.token_id}`;
+      tokenIdSpan.innerHTML = `Token ID: ${data.token_id}`;
       delegateToSpan.textContent = `Delegate To: ${data.delegate_to}`;
       totalRewardsSpan.textContent = `Total Rewards: ${data.total_rewards}`;
       statusSpan.textContent = `Status: ${data.status}`;
