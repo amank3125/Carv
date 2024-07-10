@@ -4,31 +4,35 @@
   <title>Carv Node Tracker & Info</title>
   <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-  <a class="version"> v1.2.1</a>
-  <input type="text" class="walletAddress" placeholder="Enter wallet address" value="">
-  <button class="fetch-btn">Fetch Info</button>
-  
-  <div class="resultContainer">
-    <h1>Wallet Info</h1>
-    <p>Token ID: <span class="token_id"></span></p>
-    <p>Delegate To: <span class="delegate_to"></span></p>
-    <p>Total Rewards: <span class="total_rewards"></span></p>
-    <p>Status: <span class="status"></span></p>
-    <p>Uptime Rate: <span class="uptime_rate"></span></p>
-  </div>
-
-  <div class="nodeStatusContainer">
-    <h1>Node Status</h1>
-    <p>Node Address:<span class="nodeAddress"></span></p>
-    <p>Node Status: <span class="nodeStatus"></span></p>
-    <p>Voting Power: <span class="votingPower"></span></p>
-    <p>Recevied Delegations: <span class="receivedDelegations"></span></p>
-    <p>Commission: <span class="nodeCommission"></span></p>
-    <p>Uptime Rate: <span class="nodeUptimeRate"></span></p>
-  </div>
-
+  <div class="main">
+    <div class="addressContainer">
+      <a class="version"> v1.2.1</a>
+      <input type="text" class="walletAddress" placeholder="Enter wallet address" value="">
+      <button class="fetch-btn"><i class="fa fa-search" aria-hidden="true"></i></button>
+    </div>
+    <div class="flexbox">
+      <div class="resultContainer">
+        <h1>Wallet Info</h1>
+        <p>Token ID: <span class="token_id"><span class="loader hidden"></span></span></p>
+        <p>Delegate To: <span class="delegate_to"><span class="loader hidden"></span></span></p>
+        <p>Total Rewards: <span class="total_rewards"><span class="loader hidden"></span></span></p>
+        <p>Status: <span class="walletStatus"><span class="loader hidden"></span></span></p>
+        <p>Uptime Rate: <span class="uptime_rate"><span class="loader hidden"></span></span></p>
+      </div>
+      <div class="nodeStatusContainer">
+        <h1>Node Status</h1>
+        <p>Node Address:<span class="nodeAddress"><span class="loader hidden"></span></span></p>
+        <p>Node Status: <span class="nodeStatus hidden"></span><span class="loader hidden"></span></p>
+        <p>Voting Power: <span class="votingPower"><span class="loader hidden"></span></span></p>
+        <p>Recevied Delegations: <span class="receivedDelegations"><span class="loader hidden"></span></span></p>
+        <p>Commission: <span class="nodeCommission"><span class="loader hidden"></span></span></p>
+        <p>Uptime Rate: <span class="nodeUptimeRate"><span class="loader hidden"></span></span></p>
+      </div>
+    </div>
+</div>
   <script src="app.js"></script>
 </body>
 </html>
