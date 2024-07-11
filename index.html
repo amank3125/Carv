@@ -8,13 +8,16 @@
 </head>
 <body>
   <div class="main">
-    <div class="errorContainer hidden"><p><span class="errorMsg"></span></p></div>
+    <a class="version"> v1.3.1</a>
+    <img src="logo.png" height="40px" class="carvLogo">
+
     <div class="addressContainer">
-      <a class="version"> v1.3.1</a>
-      <input type="text" class="walletAddress" placeholder="Enter wallet address" value="">
+      
+      <input type="text" class="walletAddress" placeholder="Enter license wallet address" value="">
       <button class="fetch-btn"><i class="fa fa-search" aria-hidden="true"></i></button>
     </div>
-    <div class="flexbox">
+    <div class="errorContainer hidden"><p><span class="errorMsg"></span></p></div>
+    <div class="flexboxDiv">
       <div class="resultContainer">
         <h1>Wallet Info</h1>
         <p>Token ID: <span class="token_id"><span class="loader hidden"></span></span></p>
@@ -26,13 +29,14 @@
       <div class="nodeStatusContainer">
         <h1>Node Status</h1>
         <p>Node Address:<span class="nodeAddress"><span class="loader hidden"></span></span></p>
-        <p>Node Status: <span class="nodeStatus hidden"></span><span class="loader hidden"></span></p>
+        <p>Node Status: <span class="nodeStatus hidden"><span class="statusDot">•</span></span><span class="loader hidden"></span></p>
         <p>Voting Power: <span class="votingPower"><span class="loader hidden"></span></span></p>
         <p>Received Delegations: <span class="receivedDelegations"><span class="loader hidden"></span></span></p>
         <p>Commission: <span class="nodeCommission"><span class="loader hidden"></span></span></p>
         <p>Uptime Rate: <span class="nodeUptimeRate"><span class="loader hidden"></span></span></p>
       </div>
     </div>
+    <p class="disclaimer"><span>Note: This is an unofficial tool and it is only meant for tracking node status and accumulated rewards</span></p>
 </div>
   <script src="app.js"></script>
 </body>

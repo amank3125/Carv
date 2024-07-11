@@ -5,6 +5,7 @@ const tokenId = document.querySelector('.token_id');
 const delegateTo = document.querySelector('.delegate_to');
 const totalRewards = document.querySelector('.total_rewards');
 const walletStatus = document.querySelector('.walletStatus');
+const flexboxDiv = document.querySelector('.flexboxDiv');
 const uptimeRate = document.querySelector('.uptime_rate');
 const nodeAddress = document.querySelector('.nodeAddress');
 const nodeStatus = document.querySelector('.nodeStatus');
@@ -14,9 +15,11 @@ const nodeCommission = document.querySelector('.nodeCommission');
 const nodeUptimeRate = document.querySelector('.nodeUptimeRate');
 const errorContainer = document.querySelector('.errorContainer');
 const errorMsg = document.querySelector('.errorMsg');
+const regex = /^(0x)?[0-9a-fA-F]{40}$/;
 
 
-function resetValues() {
+
+function resetValues() {            // reset all values to default
 delegateTo.textContent = '';
 totalRewards.textContent = '';
 walletStatus.textContent = '';
@@ -31,20 +34,21 @@ nodeStatus.classList.add('hidden');
 walletStatus.classList.add('hidden');
 errorContainer.classList.add('hidden');
 }
-
+function callError(e){                // show error message
+  errorMsg.textContent=e;
+  flexboxDiv.style.filter='blur(10px)';
+  errorContainer.classList.remove('hidden');
+}
 fetchBtn.addEventListener('click',  () => {
   resetValues();
     const walletAdd = walletAddress.value.trim();
     if (!walletAdd) {
-      errorMsg.textContent='Please enter a valid wallet address';
-      errorContainer.classList.remove('hidden');
+      callError('Please enter a valid wallet address');
       return;
-    }
-
+    } else if (regex.test(walletAdd)) {
       fetch(`https://interface.carv.io/explorer_alphanet/client_info?wallet_addr=${walletAdd}`)
       .then(resp=>resp.json())
       .then(data=>{
-        
         if(data.data.delegation_infos==null){
           delegateTo.textContent = "self";
           tokenId.innerHTML = "none";
@@ -68,7 +72,7 @@ fetchBtn.addEventListener('click',  () => {
           delegateAddress=data.data.delegation_infos[0].delegate_to;
           tokenId.innerHTML = data.data.delegation_infos[0].token_id;
           delegateTo.textContent = delegateAddress.slice(0, 4) + '...' + delegateAddress.slice(-4); //shorten long address
-          totalRewards.textContent = data.data.total_rewards+" veCARV";
+          totalRewards.textContent = Number(data.data.total_rewards).toFixed(2)+" veCARV";
           walletStatus.textContent = data.data.status;
           uptimeRate.textContent = data.data.uptime_rate;
           delegateTo.addEventListener('mouseenter', function() {
@@ -93,10 +97,10 @@ fetchBtn.addEventListener('click',  () => {
         .then(resp=>resp.json())
         .then(data=>{
           if(data.data.license.licenses==0){
-            errorMsg.textContent='No License found for this wallet';
-            errorContainer.classList.remove('hidden');
+            callError('No License found for this wallet');
             } else {
           if(data.data.license.delegation_infos!=null){
+            flexboxDiv.style.filter='none';
             console.log('1----------------');
             delegateAddress=data.data.license.delegation_infos[0].delegate_to;
               for(i=0;i<data.data.verifier_list.length;i++){
@@ -121,8 +125,8 @@ fetchBtn.addEventListener('click',  () => {
           }}
         })
         .catch(err=>console.log(err));
-});
-
-      
+}else{
+  callError('Invalid wallet address!')
+}});
 
 
