@@ -15,11 +15,13 @@ const nodeCommission = document.querySelector('.nodeCommission');
 const nodeUptimeRate = document.querySelector('.nodeUptimeRate');
 const errorContainer = document.querySelector('.errorContainer');
 const errorMsg = document.querySelector('.errorMsg');
+const errorClose = document.querySelector('.errorClose');
 const regex = /^(0x)?[0-9a-fA-F]{40}$/;
 
 
 
-function resetValues() {            // reset all values to default
+function resetValues() {   
+walletAddress.value='';         // reset all values to default
 delegateTo.textContent = '';
 totalRewards.textContent = '';
 walletStatus.textContent = '';
@@ -32,20 +34,28 @@ nodeCommission.textContent = '';
 nodeUptimeRate.textContent = '';
 nodeStatus.classList.add('hidden');
 walletStatus.classList.add('hidden');
-errorContainer.classList.add('hidden');
+
 }
 function callError(e){                // show error message
   errorMsg.textContent=e;
   flexboxDiv.style.filter='blur(10px)';
   errorContainer.classList.remove('hidden');
+  errorContainer.style.transform='translateY(0)';
+  errorContainer.style.filter='opacity(1)';
 }
+errorClose.addEventListener('click', () => {
+  flexboxDiv.style.filter='blur(0)';
+  errorContainer.style.transform='translateY(-250%)';
+  errorContainer.style.filter='opacity(0)';
+  resetValues();
+  // errorContainer.classList.add('hidden');
+})
 walletAddress.addEventListener('keypress',(e)=>{
   if(e.key === 'Enter'){
     fetchBtn.click();
   }
 })
 fetchBtn.addEventListener('click',  () => {
-  resetValues();
     const walletAdd = walletAddress.value.trim();
     if (!walletAdd) {
       callError('Please enter a valid wallet address');
