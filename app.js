@@ -1,4 +1,5 @@
 const walletAddress = document.querySelector('.walletAddress');
+const carvPerDay = document.querySelector('.carvPerDay');
 const fetchBtn = document.querySelector('.fetch-btn');
 const resultContainer = document.querySelector('.resultContainer');
 const tokenId = document.querySelector('.token_id');
@@ -55,6 +56,14 @@ walletAddress.addEventListener('keypress',(e)=>{
     fetchBtn.click();
   }
 })
+document.addEventListener('DOMContentLoaded', () => {
+  fetch('https://faas-ams3-2a2df116.doserverless.co/api/v1/web/fn-d38dd739-354e-43bf-b096-1c57b14c6512/default/carv')
+  .then(resp=>resp.json())
+  .then(data=>carvPerDay.textContent=`veCarv/day: ${Number(data.perDay).toFixed(2)}`)
+  .catch(err=>console.log(err));
+});
+
+
 fetchBtn.addEventListener('click',  () => {
     const walletAdd = walletAddress.value.trim();
     if (!walletAdd) {

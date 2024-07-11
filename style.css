@@ -26,10 +26,10 @@ body{
   height: 10vh;
   padding-inline: 20px;
   grid-auto-flow: column; 
-  grid-template-columns: 1fr 4fr 1fr; 
+  grid-template-columns: 1fr 4fr 1fr 1fr; 
   grid-template-rows: 1fr; 
   gap: 0px 0px; 
-  grid-template-areas: "carvLogo addressContainer version"; 
+  grid-template-areas: "carvLogo addressContainer carvPerDay version"; 
   justify-content: space-evenly; 
   align-content: space-evenly; 
   align-items: center;
@@ -66,6 +66,14 @@ body{
 .walletAddress::placeholder{
   color: white;
   text-transform:none;
+}
+.carvPerDay {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--purple);
+  grid-area: carvPerDay;
+  justify-self: end; 
+  align-self: center; 
 }
 .version {
   font-size: 12px;
