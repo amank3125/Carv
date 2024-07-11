@@ -26,7 +26,7 @@ body{
   height: 10vh;
   padding-inline: 20px;
   grid-auto-flow: column; 
-  grid-template-columns: 1fr 4fr 1fr 1fr; 
+  grid-template-columns: 1fr 4fr 1fr; 
   grid-template-rows: 1fr; 
   gap: 0px 0px; 
   grid-template-areas: "carvLogo addressContainer carvPerDay version"; 
@@ -72,6 +72,7 @@ body{
   font-weight: 800;
   color: var(--purple);
   grid-area: carvPerDay;
+  padding-right: 10px;
   justify-self: end; 
   align-self: center; 
 }
@@ -292,5 +293,12 @@ body{
   .disclaimer{
     width: 80%;
     font-size: 0.5em;
+  }
+  .carvPerDay{
+    text-align: right;
+    font-size: 8px;
+  }
+  .version {
+    display: none;;
   }
 }

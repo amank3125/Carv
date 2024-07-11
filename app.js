@@ -59,7 +59,7 @@ walletAddress.addEventListener('keypress',(e)=>{
 document.addEventListener('DOMContentLoaded', () => {
   fetch('https://faas-ams3-2a2df116.doserverless.co/api/v1/web/fn-d38dd739-354e-43bf-b096-1c57b14c6512/default/carv')
   .then(resp=>resp.json())
-  .then(data=>carvPerDay.textContent=`veCarv/day: ${Number(data.perDay).toFixed(2)}`)
+  .then(data=>carvPerDay.textContent=`veCARV/day: ${Number(data.perDay).toFixed(2)}`)
   .catch(err=>console.log(err));
 });
 
