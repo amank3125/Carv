@@ -12,6 +12,8 @@ const votingPower = document.querySelector('.votingPower');
 const receivedDelegations = document.querySelector('.receivedDelegations');
 const nodeCommission = document.querySelector('.nodeCommission');
 const nodeUptimeRate = document.querySelector('.nodeUptimeRate');
+const errorContainer = document.querySelector('.errorContainer');
+const errorMsg = document.querySelector('.errorMsg');
 
 
 function resetValues() {
@@ -27,13 +29,15 @@ nodeCommission.textContent = '';
 nodeUptimeRate.textContent = '';
 nodeStatus.classList.add('hidden');
 walletStatus.classList.add('hidden');
+errorContainer.classList.add('hidden');
 }
 
 fetchBtn.addEventListener('click',  () => {
   resetValues();
     const walletAdd = walletAddress.value.trim();
     if (!walletAdd) {
-      alert('Please enter a wallet address');
+      errorMsg.textContent='Please enter a valid wallet address';
+      errorContainer.classList.remove('hidden');
       return;
     }
 
@@ -89,7 +93,8 @@ fetchBtn.addEventListener('click',  () => {
         .then(resp=>resp.json())
         .then(data=>{
           if(data.data.license.licenses==0){
-            alert("No node license found")
+            errorMsg.textContent='No License found for this wallet';
+            errorContainer.classList.remove('hidden');
             } else {
           if(data.data.license.delegation_infos!=null){
             console.log('1----------------');

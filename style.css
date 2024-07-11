@@ -16,7 +16,7 @@ body{
   color: #fff;
 }
 .hidden {
-  display: none;
+  display: none !important;
 }
 .version {
   position: absolute;
@@ -36,6 +36,20 @@ body{
   padding: 0;
   border: none;
   background-image: linear-gradient(135deg,var(--dark),var(--lighDark));
+}
+.errorContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 60px;
+  width:calc(var(--width)/2);
+  margin-bottom: 5%;
+  padding: 0;
+  border: 1px var(--red) solid;
+  border-radius: 10px;
+  background-color:var(--darkred);
+  color: var(--red);
 }
 .addressContainer{
   width: var(--width);
@@ -92,7 +106,10 @@ body{
 .resultContainer h1 {
   text-align: center;
 }
-
+.total_rewards {
+  color: var(--purple);
+  font-weight: 800;
+}
 .nodeStatusContainer{
   /* border: 1px rgb(255, 41, 223) solid; */
   padding: 10px;
