@@ -1,21 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Carv Node Tracker & Info</title>
+  <title>Carv Node Tracker and Info</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scale=1">
   <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-  <div class="main">
-    <a class="version"> v1.4.0</a>
+  <div class="header">
     <img src="logo.png" height="40px" class="carvLogo">
-
     <div class="addressContainer">
-      
-      <input type="text" class="walletAddress" placeholder="Enter license wallet address" value="">
+      <input type="text" class="walletAddress" placeholder="Enter licensed wallet address" value="">
       <button class="fetch-btn"><i class="fa fa-search" aria-hidden="true"></i></button>
     </div>
+    <a class="version"> v1.4.0</a>
+  </div>
+
+  <div class="main">
     <div class="errorContainer hidden"><p><span class="errorMsg"></span></p></div>
     <div class="flexboxDiv">
       <div class="resultContainer">
@@ -29,7 +31,7 @@
       <div class="nodeStatusContainer">
         <h1>Node Status</h1>
         <p>Node Address:<span class="nodeAddress"><span class="loader hidden"></span></span></p>
-        <p>Node Status: <span class="nodeStatus hidden"><span class="statusDot">•</span></span><span class="loader hidden"></span></p>
+        <p>Node Status: <span class="nodeStatus hidden"></span><span class="loader hidden"></span></p>
         <p>Voting Power: <span class="votingPower"><span class="loader hidden"></span></span></p>
         <p>Received Delegations: <span class="receivedDelegations"><span class="loader hidden"></span></span></p>
         <p>Commission: <span class="nodeCommission"><span class="loader hidden"></span></span></p>

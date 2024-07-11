@@ -39,6 +39,11 @@ function callError(e){                // show error message
   flexboxDiv.style.filter='blur(10px)';
   errorContainer.classList.remove('hidden');
 }
+walletAddress.addEventListener('keypress',(e)=>{
+  if(e.key === 'Enter'){
+    fetchBtn.click();
+  }
+})
 fetchBtn.addEventListener('click',  () => {
   resetValues();
     const walletAdd = walletAddress.value.trim();

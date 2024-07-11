@@ -6,6 +6,7 @@
   --width:40vw;
   --red:#fd5555;
   --darkred:rgba(255, 86, 86, 0.18);
+  --bg:linear-gradient(135deg,var(--dark),var(--lighDark));
 }
 * {
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
@@ -14,37 +15,78 @@ body{
   padding: 0;
   margin: 0;
   color: #fff;
+  background:#22202b;
 }
 
 .hidden {
   display: none !important;
 }
+.header {
+  display: grid; 
+  height: 10vh;
+  padding-inline: 20px;
+  grid-auto-flow: column; 
+  grid-template-columns: 1fr 4fr 1fr; 
+  grid-template-rows: 1fr; 
+  gap: 0px 0px; 
+  grid-template-areas: "carvLogo addressContainer version"; 
+  justify-content: space-evenly; 
+  align-content: space-evenly; 
+  align-items: center;
+  background-image: var(--bg);
+}
 .carvLogo {
-  position: absolute;
-  top: 10px;
-  left: 15px;
-  height: 40px;
-  max-height: 60px;
+  height: 2vw;
+  max-height: 4vw;
+  justify-self: start; 
+  align-self: center; 
+  grid-area: carvLogo; 
+}
+.addressContainer{
+  width: var(--width);
+  display: flex;
+  justify-self: center; 
+  align-self: center; 
+  grid-area: addressContainer; 
+}
+.walletAddress {
+  height: auto;
+  width: 80%;
+  margin: 0;
+  padding: 0px 0px 0px 20px;
+  font-size: 16px;
+  outline: none;
+  border: 2px solid var(--purple);
+  border-radius: 50px 0px 0px 50px;
+  background-color: var(--lighDark);
+  color: var(--purple);
+  transition: 0.3s all ease-in-out;
+  text-transform: uppercase;
+}
+.walletAddress::placeholder{
+  color: white;
+  text-transform:none;
 }
 .version {
-  position: absolute;
-  top: 5px;
-  right: 5px;
   font-size: 12px;
   font-weight: 800;
+  justify-self: end; 
+  align-self: center; 
+  grid-area: version; 
 }
 .main {
   display: grid;
-  flex-direction: column;
-  align-items: center;
-  align-content: space-between;
-  justify-content: center;
-  height: 100vh;
-  width: 100vw;
-  margin: 0;
-  padding: 0;
-  border: none;
-  background-image: linear-gradient(135deg,var(--dark),var(--lighDark));
+  height: 90vh;
+  width: 100%;
+  display: grid; 
+  grid-template-columns: 1fr; 
+  grid-template-rows: 1fr 5fr 1fr; 
+  gap: 0px 0px; 
+  grid-template-areas: 
+    "errorContainer"
+    "flexboxDiv"
+    "disclaimer"; 
+  background-image: var(--bg);
 }
 .errorContainer {
   position: absolute;
@@ -61,31 +103,12 @@ body{
   background-color:var(--darkred);
   color: var(--red);
   place-self: center;
+
+  justify-self: center; 
+  align-self: center; 
+  grid-area: errorContainer; 
 }
-.addressContainer{
-  width: var(--width);
-  margin-block: 10px 40px;
-  display: flex;
-  justify-content: center;
-}
-.walletAddress {
-  height: 40px;
-  width: 80%;
-  margin: 0;
-  padding: 0px 0px 0px 20px;
-  outline: none;
-  border: 2px solid var(--purple);
-  border-radius: 50px 0px 0px 50px;
-  background-color: var(--lighDark);
-  color: var(--purple);
-  transition: 0.3s all ease-in-out;
-}
-.walletAddress::placeholder{
-  color: white;
-}
-.walletAddress:hover{
-  background-color: var(--dark);
-}
+
 .fetch-btn {
   margin: 0;
   width: 15%;
@@ -105,6 +128,10 @@ body{
   flex-direction: row;
   justify-content: space-evenly;
   border-radius:20px;
+
+  justify-self: center; 
+  align-self: center; 
+  grid-area: flexboxDiv; 
 }
 .resultContainer{
   /* border: 1px rgb(176, 255, 136) solid; */
@@ -125,7 +152,7 @@ body{
 .nodeStatusContainer{
   /* border: 1px rgb(255, 41, 223) solid; */
   width: 50%;
-  padding: 20px;
+  padding: 10px 10px 10px 20px;
   display: flex;
   flex-direction: column;
   align-items: start;
@@ -140,17 +167,16 @@ body{
   padding-block: 5px;
   border-radius: 50px;
 }
-.statusDot {
-  font-size: 36px;
-  align-self: center;
-  text-align: center;
-}
 .disclaimer {
   justify-self: end;
   font-size: 12px;
   text-align: center;
   margin-top: 10px;
   width: 100%;
+
+  justify-self: center; 
+  align-self: end; 
+  grid-area: disclaimer; 
 }
 /* Loader starts */
 .loader {
@@ -175,3 +201,82 @@ body{
   /* Loader ends */
 
 /* CSS For mobile devices */
+
+@media only screen and (max-width: 450px) {
+  p {
+    font-size: 0.8em;
+  }
+  .header {
+    display: grid; 
+    height: 6vh;
+    padding: 15px 10px 15px 10px;
+  }
+  .carvLogo {
+    max-width: 100%;
+    height: auto;
+  }
+  .errorContainer {
+    width: 60%;
+    height: 40px;
+  }
+  /* .errorContainer::after{
+    content: "X";
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    border: 1px var(--red) solid;
+    border-radius: 50%;
+    height: 20px;
+    width: 20px;
+    text-align: center;
+    background-color: var(--darkred);
+    padding: auto;
+    cursor: pointer;
+  } */
+  .main {
+    display: grid;
+    place-items: center;
+    flex-direction: column;
+    align-items: center;
+    align-content: space-between;
+    justify-content: center;
+    height:90vh;
+    width: 100vw
+  }
+  .addressContainer {
+    width:100%;
+    z-index: 1;
+    padding-left: 15px;
+  }
+  .walletAddress {
+    font-size: 0.8em;
+    padding-left: 8px;
+  }
+  .flexboxDiv {
+    align-items: start;
+    justify-content: start;
+    width: 85%;
+    font-size: 1em;
+    padding: 5px;
+  }
+  .flexboxDiv h1 {
+    font-size: 1.2em;
+  }
+  .resultContainer{
+    height: 100%;
+  }
+  .nodeStatusContainer {
+    padding-left: 10px;
+    height: 100%;
+  }
+  .nodeStatus,.walletStatus{
+    text-transform: capitalize;
+    padding-inline: 5px;
+    padding-block: 3px;
+    border-radius: 50px;
+  }
+  .disclaimer{
+    width: 80%;
+    font-size: 0.5em;
+  }
+}
