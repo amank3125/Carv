@@ -63,7 +63,6 @@ document.addEventListener('DOMContentLoaded', () => {
   .catch(err=>console.log(err));
 });
 
-
 fetchBtn.addEventListener('click',  () => {
     const walletAdd = walletAddress.value.trim();
     if (!walletAdd) {

@@ -97,6 +97,10 @@ body{
     "disclaimer"; 
   background-image: var(--bg);
 }
+.timeline {
+  grid-area: errorContainer;
+  margin-bottom: 40px;
+}
 .errorContainer {
   position: absolute;
   top: 13%;
