@@ -132,7 +132,15 @@ body{
 }
 .errorClose {
   cursor: pointer;
-  padding-left: 10px;
+  padding-left:10px;
+  height: auto;
+  width: auto;
+  transition: 0.2s all ease-in-out;
+}
+.errorClose:hover{
+  transform: scale(1.2);
+  transform-origin: center;
+  
 }
 .fetch-btn {
   margin: 0;
@@ -144,6 +152,10 @@ body{
   background-color: var(--purple);
   color: white;
   cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+.fetch-btn:hover{
+  box-shadow: 0px 0px 40px 10px #824dff50;
 }
 .flexboxDiv {
   width: var(--width);
