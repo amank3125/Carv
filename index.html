@@ -42,6 +42,9 @@
         <p>Uptime Rate: <span class="nodeUptimeRate"><span class="loader2 hidden"></span></span></p>
       </div>
     </div>
+    <label for="showChart" class="showChart_label"></label>
+    <input type="checkbox" class="showChart">
+    <div class="chartDiv"><canvas class="mainChart"></canvas></div>
 <!-- Timeline starts -->
  <div class="timeline hidden">
 <h1>veCARV Projected Accumulation</h1>
@@ -85,6 +88,7 @@
 
     <p class="disclaimer"><span>Note: This is an unofficial tool and it is only meant for tracking node status and accumulated rewards</span></p>
 </div>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

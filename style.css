@@ -171,6 +171,59 @@ body{
   grid-area: flexboxDiv; 
   overflow: hidden;
 }
+
+.chartDiv{
+  border: 1px solid white;
+  display: none;
+  height: 300px;
+  width: 400px;
+  grid-area:flexboxDiv;
+  place-self: end;
+  align-self: center;
+}
+.showChart {
+  height: 15px;
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.showChart_label {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  background-color: #fff; /* Background color of the checkbox */
+  border: 2px solid #ccc; /* Border color of the checkbox */
+  border-radius: 4px; /* Rounded corners */
+  position: relative;
+  cursor: pointer;
+  vertical-align: middle;
+  margin-right: 10px;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+.showChart:checked + .chartDiv{
+  display: block !important;
+}
+.showChart:checked + .showChart_label {
+  background-color: var(--purple); 
+  border-color: var(--purple);
+}
+.showChart:checked + .showChart_label:after{
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 6px;
+  border: solid #fff; /* Checkmark color */
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  transform: translate(-50%, -50%);
+}
+.showChart_label:hover{
+  background-color: #f0f0f0;
+  border-color: #888; 
+}
 .resultContainer{
   /* border: 1px rgb(176, 255, 136) solid; */
   width: 50%;

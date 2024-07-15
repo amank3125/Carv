@@ -19,7 +19,12 @@ const errorMsg = document.querySelector('.errorMsg');
 const errorClose = document.querySelector('.errorClose');
 const loaders1 = document.querySelectorAll('.loader1')
 const loaders2 = document.querySelectorAll('.loader2')
+const mainChart = document.querySelectorAll('.mainChart')
 const regex = /^(0x)?[0-9a-fA-F]{40}$/;
+let veCARV=0;
+const currentMonthNumber = new Date().getMonth() + 1;
+const remainingDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate() - new Date().getDate();
+const getMonthShortName = (monthNumber) => new Date(0, monthNumber - 1).toLocaleString('default', { month: 'short' });
 
 
 
@@ -63,7 +68,7 @@ walletAddress.addEventListener('keypress',(e)=>{
 document.addEventListener('DOMContentLoaded', () => {
   fetch('https://faas-ams3-2a2df116.doserverless.co/api/v1/web/fn-d38dd739-354e-43bf-b096-1c57b14c6512/default/carv')
   .then(resp=>resp.json())
-  .then(data=>carvPerDay.textContent=`veCARV/day: ${Number(data.perDay).toFixed(2)}`)
+  .then(data=>{carvPerDay.textContent=`veCARV/day: ${Number(data.perDay).toFixed(2)}`; veCARV=Number(data.perDay);})
   .catch(err=>console.log(err));
 });
 
@@ -131,6 +136,7 @@ function fetchData(){
           tokenId.innerHTML = data.data.delegation_infos[0].token_id;
           delegateTo.textContent = delegateAddress.slice(0, 4) + '...' + delegateAddress.slice(-4); //shorten long address
           totalRewards.textContent = Number(data.data.total_rewards).toFixed(2)+" veCARV";
+          estimateRewards(data.data.total_rewards);
           walletStatus.textContent = data.data.status;
           uptimeRate.textContent = data.data.uptime_rate;
           delegateTo.addEventListener('mouseenter', function() {
@@ -185,3 +191,33 @@ function fetchData(){
         })
         .catch(err=>console.log(err));
 }
+const chartLabels = [];
+const chartData = [];
+
+  function estimateRewards(e){
+    for(i=currentMonthNumber;chartLabels.length<12;i++){
+      chartLabels.push(getMonthShortName(i))
+    }
+    chartData[0]= +e+(veCARV*remainingDays);
+    for(i=1;i<chartLabels.length;i++){
+      if(i==5){
+        veCARV = veCARV/2;
+      }
+      const daysinMonth = new Date(new Date().getFullYear(), i, 0).getDate();
+      chartData[i] = chartData[i-1]+(veCARV*daysinMonth);
+      // console.log(chartLabels[i]+" - "+chartData[i])
+  // }console.log(chartData);
+  }renderChart(chartLabels,chartData);
+};
+
+function renderChart(l,d){new Chart(mainChart,{
+  type:'line',
+  data:{labels:l,
+    datasets:[{
+      label:'veCARV',
+      data:d,
+      borderWidth:1,
+      backgroundColor:'#824dff',
+      borderColor:'#ffffff'
+    }]
+  }});}
