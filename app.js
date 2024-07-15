@@ -8,6 +8,7 @@ const totalRewards = document.querySelector('.total_rewards');
 const walletStatus = document.querySelector('.walletStatus');
 const flexboxDiv = document.querySelector('.flexboxDiv');
 const uptimeRate = document.querySelector('.uptime_rate');
+const toggleChartBtn = document.querySelector('.toggleChart');
 const nodeAddress = document.querySelector('.nodeAddress');
 const nodeStatus = document.querySelector('.nodeStatus');
 const votingPower = document.querySelector('.votingPower');
@@ -19,7 +20,7 @@ const errorMsg = document.querySelector('.errorMsg');
 const errorClose = document.querySelector('.errorClose');
 const loaders1 = document.querySelectorAll('.loader1')
 const loaders2 = document.querySelectorAll('.loader2')
-const mainChart = document.querySelectorAll('.mainChart')
+const mainChart = document.querySelector('.mainChart')
 const regex = /^(0x)?[0-9a-fA-F]{40}$/;
 let veCARV=0;
 const currentMonthNumber = new Date().getMonth() + 1;
@@ -28,8 +29,8 @@ const getMonthShortName = (monthNumber) => new Date(0, monthNumber - 1).toLocale
 
 
 
-function resetValues() {   
-walletAddress.value='';         // reset all values to default
+function resetValues() {   // reset all values to default
+walletAddress.value='';         
 delegateTo.textContent = '';
 totalRewards.textContent = '';
 walletStatus.textContent = '';
@@ -42,6 +43,7 @@ nodeCommission.textContent = '';
 nodeUptimeRate.textContent = '';
 nodeStatus.classList.add('hidden');
 walletStatus.classList.add('hidden');
+toggleChartBtn.classList.add('hidden');
 hideLoaders(1);
 hideLoaders(2);
 
@@ -53,26 +55,27 @@ function callError(e){                // show error message
   errorContainer.style.transform='translateY(0)';
   errorContainer.style.filter='opacity(1)';
 }
-errorClose.addEventListener('click', () => {
+errorClose.addEventListener('click', () => { // close error message
   flexboxDiv.style.filter='blur(0)';
   errorContainer.style.transform='translateY(-250%)';
   errorContainer.style.filter='opacity(0)';
   resetValues();
   // errorContainer.classList.add('hidden');
 })
-walletAddress.addEventListener('keypress',(e)=>{
+walletAddress.addEventListener('keypress',(e)=>{ // call main fetch func. when enter is pressed
   if(e.key === 'Enter'){
     fetchBtn.click();
   }
 })
-document.addEventListener('DOMContentLoaded', () => {
+
+document.addEventListener('DOMContentLoaded', () => { // fetch daily veCARV rate
   fetch('https://faas-ams3-2a2df116.doserverless.co/api/v1/web/fn-d38dd739-354e-43bf-b096-1c57b14c6512/default/carv')
   .then(resp=>resp.json())
   .then(data=>{carvPerDay.textContent=`veCARV/day: ${Number(data.perDay).toFixed(2)}`; veCARV=Number(data.perDay);})
   .catch(err=>console.log(err));
 });
 
-fetchBtn.addEventListener('click',  () => {
+fetchBtn.addEventListener('click',  () => { // call main fetch func.
     const walletAdd = walletAddress.value.trim();
     if (!walletAdd) {
       callError('Please enter a valid wallet address');
@@ -83,7 +86,7 @@ fetchBtn.addEventListener('click',  () => {
   callError('Invalid wallet address!')
 }});
 
-function callLoaders(){
+function callLoaders(){ // show all loaders
   loaders1.forEach(element => {
     element.classList.remove('hidden') ;   
   });
@@ -92,7 +95,7 @@ function callLoaders(){
   });
   // loaders.classList.remove('.hidden');
 }
-function hideLoaders(e){
+function hideLoaders(e){ // hide all loaders
   if(e==1){
     loaders1.forEach(element => {
       element.classList.add('hidden') ;   
@@ -105,7 +108,7 @@ function hideLoaders(e){
   // loaders.classList.remove('.hidden');
 }
 
-function fetchData(){
+function fetchData(){ // main fetch func.
   callLoaders();
   const walletAdd = walletAddress.value.trim();
   fetch(`https://interface.carv.io/explorer_alphanet/client_info?wallet_addr=${walletAdd}`)
@@ -137,6 +140,7 @@ function fetchData(){
           delegateTo.textContent = delegateAddress.slice(0, 4) + '...' + delegateAddress.slice(-4); //shorten long address
           totalRewards.textContent = Number(data.data.total_rewards).toFixed(2)+" veCARV";
           estimateRewards(data.data.total_rewards);
+          toggleChartBtn.classList.remove('hidden');
           walletStatus.textContent = data.data.status;
           uptimeRate.textContent = data.data.uptime_rate;
           delegateTo.addEventListener('mouseenter', function() {
@@ -194,13 +198,13 @@ function fetchData(){
 const chartLabels = [];
 const chartData = [];
 
-  function estimateRewards(e){
+  function estimateRewards(e){ // estimate rewards for next 12 months
     for(i=currentMonthNumber;chartLabels.length<12;i++){
       chartLabels.push(getMonthShortName(i))
     }
     chartData[0]= +e+(veCARV*remainingDays);
     for(i=1;i<chartLabels.length;i++){
-      if(i==5){
+      if(i==5){  // rewards halving in 6 months
         veCARV = veCARV/2;
       }
       const daysinMonth = new Date(new Date().getFullYear(), i, 0).getDate();
@@ -210,7 +214,7 @@ const chartData = [];
   }renderChart(chartLabels,chartData);
 };
 
-function renderChart(l,d){new Chart(mainChart,{
+function renderChart(l,d){new Chart(mainChart,{ // render chart with estimated values
   type:'line',
   data:{labels:l,
     datasets:[{
@@ -221,3 +225,16 @@ function renderChart(l,d){new Chart(mainChart,{
       borderColor:'#ffffff'
     }]
   }});}
+
+function toggleChart(){ // show/hide chart
+  if (mainChart.classList.length==2){
+    toggleChartBtn.innerHTML='Hide chart';
+    toggleChartBtn.style.backgroundColor='var(--purple)';
+    toggleChartBtn.style.color='#fff';
+  } else {
+    toggleChartBtn.innerHTML='Show chart';
+    toggleChartBtn.style.backgroundColor='var(--lightDark)';
+    toggleChartBtn.style.color='var(--purple)';
+  }
+  mainChart.classList.toggle('hidden');
+}
