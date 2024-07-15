@@ -78,22 +78,22 @@ fetchBtn.addEventListener('click',  () => {
   callError('Invalid wallet address!')
 }});
 
-function callLoaders(e){
-  loaders1.ForEach(element => {
+function callLoaders(){
+  loaders1.forEach(element => {
     element.classList.remove('hidden') ;   
   });
-  loaders2.ForEach(element => {
+  loaders2.forEach(element => {
     element.classList.remove('hidden') ;   
   });
   // loaders.classList.remove('.hidden');
 }
 function hideLoaders(e){
   if(e==1){
-    loaders1.ForEach(element => {
+    loaders1.forEach(element => {
       element.classList.add('hidden') ;   
     });
   }else {
-    loaders2.ForEach(element => {
+    loaders2.forEach(element => {
       element.classList.add('hidden') ;   
     });
   }

@@ -109,24 +109,30 @@ body{
   align-items: center;
   justify-content: space-evenly;
   height: 60px;
-  width:calc(var(--width)/3);
+  font-size: 14px;
+  /* width:calc(var(--width)/3); */
+  width:60px, 90px;
   margin-bottom: 5%;
+  padding-inline: 10px;
   border: 1px var(--red) solid;
   border-radius: 10px;
   background-color:var(--darkred);
   color: var(--red);
   place-self: center;
   transition: 0.25s ease-in all;
-
   justify-self: center; 
   align-self: center; 
   grid-area: errorContainer; 
+}
+.errorIcon {
+  padding-right: 10px;
 }
 .errorIcon path,.errorClose path{
   fill: var(--red);
 }
 .errorClose {
   cursor: pointer;
+  padding-left: 10px;
 }
 .fetch-btn {
   margin: 0;
@@ -147,10 +153,11 @@ body{
   flex-direction: row;
   justify-content: space-evenly;
   border-radius:20px;
-
+  resize: both;
   justify-self: center; 
   align-self: center; 
   grid-area: flexboxDiv; 
+  overflow: hidden;
 }
 .resultContainer{
   /* border: 1px rgb(176, 255, 136) solid; */
