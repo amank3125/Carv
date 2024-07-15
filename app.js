@@ -17,6 +17,8 @@ const nodeUptimeRate = document.querySelector('.nodeUptimeRate');
 const errorContainer = document.querySelector('.errorContainer');
 const errorMsg = document.querySelector('.errorMsg');
 const errorClose = document.querySelector('.errorClose');
+const loaders1 = document.querySelectorAll('.loader1')
+const loaders2 = document.querySelectorAll('.loader2')
 const regex = /^(0x)?[0-9a-fA-F]{40}$/;
 
 
@@ -35,6 +37,8 @@ nodeCommission.textContent = '';
 nodeUptimeRate.textContent = '';
 nodeStatus.classList.add('hidden');
 walletStatus.classList.add('hidden');
+hideLoaders(1);
+hideLoaders(2);
 
 }
 function callError(e){                // show error message
@@ -69,9 +73,40 @@ fetchBtn.addEventListener('click',  () => {
       callError('Please enter a valid wallet address');
       return;
     } else if (regex.test(walletAdd)) {
-      fetch(`https://interface.carv.io/explorer_alphanet/client_info?wallet_addr=${walletAdd}`)
+      fetchData();
+}else{
+  callError('Invalid wallet address!')
+}});
+
+function callLoaders(e){
+  loaders1.ForEach(element => {
+    element.classList.remove('hidden') ;   
+  });
+  loaders2.ForEach(element => {
+    element.classList.remove('hidden') ;   
+  });
+  // loaders.classList.remove('.hidden');
+}
+function hideLoaders(e){
+  if(e==1){
+    loaders1.ForEach(element => {
+      element.classList.add('hidden') ;   
+    });
+  }else {
+    loaders2.ForEach(element => {
+      element.classList.add('hidden') ;   
+    });
+  }
+  // loaders.classList.remove('.hidden');
+}
+
+function fetchData(){
+  callLoaders();
+  const walletAdd = walletAddress.value.trim();
+  fetch(`https://interface.carv.io/explorer_alphanet/client_info?wallet_addr=${walletAdd}`)
       .then(resp=>resp.json())
       .then(data=>{
+        hideLoaders(1);
         if(data.data.delegation_infos==null){
           delegateTo.textContent = "self";
           tokenId.innerHTML = "none";
@@ -119,6 +154,7 @@ fetchBtn.addEventListener('click',  () => {
       fetch(`https://interface.carv.io/explorer_alphanet/delegation?wallet_addr=${walletAdd}&page_size=3000`)
         .then(resp=>resp.json())
         .then(data=>{
+          hideLoaders(2);
           if(data.data.license.licenses==0){
             callError('No License found for this wallet');
             } else {
@@ -148,8 +184,4 @@ fetchBtn.addEventListener('click',  () => {
           }}
         })
         .catch(err=>console.log(err));
-}else{
-  callError('Invalid wallet address!')
-}});
-
-
+}
