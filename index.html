@@ -34,7 +34,7 @@
       </div>
       <div class="nodeStatusContainer">
         <h1>Node Status</h1>
-        <p>Node Address:<span class="nodeAddress"><span class="loader hidden"></span></span></p>
+        <p>Node Address: <span class="nodeAddress"><span class="loader hidden"></span></span></p>
         <p>Node Status: <span class="nodeStatus hidden"></span><span class="loader hidden"></span></p>
         <p>Voting Power: <span class="votingPower"><span class="loader hidden"></span></span></p>
         <p>Received Delegations: <span class="receivedDelegations"><span class="loader hidden"></span></span></p>
@@ -43,39 +43,49 @@
       </div>
     </div>
 <!-- Timeline starts -->
- <div class="timeline">
-<h1>veCARV Projected Accumulation</h1>
+<div class="chartDiv">
+  <canvas class="mainChart" aria-label="chart" role="img" height="200px" width="400px"></canvas>
+  <div class="tooltip" style="position: absolute; display: none; background-color: rgba(0, 0, 0, 0.7); color: white; padding: 5px;"></div>
+</div>
+ <div class="timeline hidden">
+<h1 class="accuHeading">veCARV Projected Accumulation</h1>
 <div class="flex-parent">
 	<div class="input-flex-container">
 		<div class="input">
-			<span class="jul" data-year="Jul" data-info=""></span>
+			<span class="jul" data-year="Jul" data-info="Jul"></span>
 		</div>
 		<div class="input">
-			<span data-year="Aug" data-info=""></span>
+			<span class="aug" data-year="Aug" data-info="Aug"></span>
 		</div>
 		<div class="input active">
-			<span data-year="Sep" data-info=""></span>
+			<span class="sep" data-year="" data-info="Sep"></span>
 		</div>
 		<div class="input">
-			<span data-year="Oct" data-info=""></span>
+			<span class="oct" data-year="" data-info="Oct"></span>
 		</div>
 		<div class="input">
-			<span data-year="Nov" data-info=""></span>
+			<span class="nov" data-year="" data-info="Nov"></span>
 		</div>
 		<div class="input">
-			<span data-year="Dec" data-info=""></span>
+			<span class="dec" data-year="" data-info="Dec"></span>
 		</div>
 		<div class="input">
-			<span data-year="Jan" data-info=""></span>
+			<span class="jan" data-year="" data-info="Jan"></span>
 		</div>
 		<div class="input">
-			<span data-year="Feb" data-info=""></span>
+			<span class="feb" data-year="" data-info="Feb"></span>
 		</div>
 		<div class="input">
-			<span data-year="Mar" data-info=""></span>
+			<span class="mar" data-year="" data-info="Mar"></span>
 		</div>
 		<div class="input">
-			<span data-year="Apr" data-info=""></span>
+			<span class="apr" data-year="" data-info="Apr"></span>
+		</div>
+		<div class="input">
+			<span class="may" data-year="" data-info="May"></span>
+		</div>
+		<div class="input">
+			<span class="jun" data-year="" data-info="Jun"></span>
 		</div>
 	</div>
 </div>
@@ -85,6 +95,7 @@
 
     <p class="disclaimer"><span>Note: This is an unofficial tool and it is only meant for tracking node status and accumulated rewards</span></p>
 </div>
-  <script src="app.js"></script>
+  <script type="module" src="app.js"></script>
+  <script type="module" src="makeChart.js"></script>
 </body>
 </html>
