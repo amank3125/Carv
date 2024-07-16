@@ -319,6 +319,14 @@ body{
   .flexboxDiv h1 {
     font-size: 1.2em;
   }
+  .toggleChart {
+    margin-top: 10px;
+    width: calc(var(--width)/1.7);
+  }
+  .chartDiv{
+    grid-area:disclaimer;
+    padding-block: 10px;
+  }
   .resultContainer{
     height: 100%;
   }
