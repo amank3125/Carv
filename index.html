@@ -31,7 +31,6 @@
         <p>Total Rewards: <span class="total_rewards"><span class="loader1 hidden"></span></span></p>
         <p>Status: <span class="walletStatus"><span class="loader1 hidden"></span></span></p>
         <p>Uptime Rate: <span class="uptime_rate"><span class="loader1 hidden"></span></span></p>
-        <button onclick="toggleChart()" class="toggleChart">Show chart</button>
       </div>
       <div class="nodeStatusContainer">
         <h1>Node Status</h1>
@@ -43,7 +42,8 @@
         <p>Uptime Rate: <span class="nodeUptimeRate"><span class="loader2 hidden"></span></span></p>
       </div>
     </div>
-    <div class="chartDiv"><canvas class="mainChart"></canvas></div>
+    <div class="chartDiv"><canvas class="mainChart hidden"></canvas></div>
+    <button title="Show chart" onclick="toggleChart()" class="toggleChartArrow"><i class="fa fa-angle-left" aria-hidden="true"></i></button>
 <!-- Timeline starts -->
  <div class="timeline hidden">
 <h1>veCARV Projected Accumulation</h1>

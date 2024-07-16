@@ -7,6 +7,7 @@
   --red:#fd5555;
   --darkred:rgba(255, 86, 86, 0.18);
   --bg:linear-gradient(135deg,var(--dark),var(--lightDark));
+  --shadow: 0px 0px 40px 10px #824dff50;
 }
 * {
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
@@ -16,6 +17,7 @@ body{
   margin: 0;
   color: #fff;
   background:#22202b;
+  overflow-x: hidden;
 }
 
 .hidden {
@@ -155,7 +157,7 @@ body{
   transition: all 0.3s ease-in-out;
 }
 .fetch-btn:hover{
-  box-shadow: 0px 0px 40px 10px #824dff50;
+ box-shadow: var(--shadow);
 }
 .flexboxDiv {
   width: var(--width);
@@ -182,14 +184,51 @@ body{
   margin-top: 10px;
   width: calc(var(--width)/7);
 }
+.toggleChartArrow{
+  position: absolute;
+  top: 50%;
+  right: -18px;
+  background-color: #824dff;
+  color: white;
+  outline: none;
+  border: none;
+  height: 8dvh;
+  width: 40px;
+  transform: translateX(5px);
+  border-radius: 15px 0px 0px 15px;
+  cursor: pointer;
+  text-align: left;
+  font-size: 18px;
+  transition: 0.3s ease-in-out all;
+}
+.toggleChartArrow:hover {
+  background-color: var(--lightDark);
+  border: 2px solid var(--purple);
+  right: -10px;
+  box-shadow: var(--shadow);
+  padding-left: 10px;
+  z-index: 0;
+}
 .chartDiv{
+  display: grid;
+  place-items:center;
   height: 300px;
   width: 400px;
   grid-area:flexboxDiv;
+  margin-right: 20px;
   place-self: end;
   align-self: center;
+  /* border: 1px white solid; */
+  z-index: 1;
 }
-
+.mainChart {
+  transition: 0.3s ease-in-out all;
+  border: 2px solid var(--purple);
+  border-radius: 15px;
+}
+.mainChart:hover{
+  box-shadow: 0px 0px 30px 10px #824dff20;
+}
 .resultContainer{
   /* border: 1px rgb(176, 255, 136) solid; */
   width: 50%;
@@ -301,7 +340,7 @@ body{
     width: 100vw
   }
   .addressContainer {
-    width:100%;
+    width:58dvw;
     z-index: 1;
     padding-left: 15px;
   }
@@ -350,5 +389,16 @@ body{
   }
   .version {
     display: none;;
+  }
+  .chartDiv {
+    height: 30dvh;
+    width: 100dvw;
+    margin: 0;
+    margin-top: -5%;
+    transform: scale(0.85);
+  }
+  .toggleChartArrow{
+    top: 75%;
+    right: -5%;
   }
 }

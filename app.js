@@ -8,7 +8,7 @@ const totalRewards = document.querySelector('.total_rewards');
 const walletStatus = document.querySelector('.walletStatus');
 const flexboxDiv = document.querySelector('.flexboxDiv');
 const uptimeRate = document.querySelector('.uptime_rate');
-const toggleChartBtn = document.querySelector('.toggleChart');
+const toggleChartArrow = document.querySelector('.toggleChartArrow');
 const nodeAddress = document.querySelector('.nodeAddress');
 const nodeStatus = document.querySelector('.nodeStatus');
 const votingPower = document.querySelector('.votingPower');
@@ -23,6 +23,7 @@ const loaders2 = document.querySelectorAll('.loader2')
 const mainChart = document.querySelector('.mainChart')
 const regex = /^(0x)?[0-9a-fA-F]{40}$/;
 let veCARV=0;
+let dataToShow = false;
 const currentMonthNumber = new Date().getMonth() + 1;
 const remainingDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate() - new Date().getDate();
 const getMonthShortName = (monthNumber) => new Date(0, monthNumber - 1).toLocaleString('default', { month: 'short' });
@@ -43,9 +44,9 @@ nodeCommission.textContent = '';
 nodeUptimeRate.textContent = '';
 nodeStatus.classList.add('hidden');
 walletStatus.classList.add('hidden');
-toggleChartBtn.classList.add('hidden');
 hideLoaders(1);
 hideLoaders(2);
+dataToShow=false;
 
 }
 function callError(e){                // show error message
@@ -140,7 +141,7 @@ function fetchData(){ // main fetch func.
           delegateTo.textContent = delegateAddress.slice(0, 4) + '...' + delegateAddress.slice(-4); //shorten long address
           totalRewards.textContent = Number(data.data.total_rewards).toFixed(2)+" veCARV";
           estimateRewards(data.data.total_rewards);
-          toggleChartBtn.classList.remove('hidden');
+          dataToShow=true;
           walletStatus.textContent = data.data.status;
           uptimeRate.textContent = data.data.uptime_rate;
           delegateTo.addEventListener('mouseenter', function() {
@@ -166,6 +167,7 @@ function fetchData(){ // main fetch func.
         .then(data=>{
           hideLoaders(2);
           if(data.data.license.licenses==0){
+            walletStatus.style='none';
             callError('No License found for this wallet');
             } else {
           if(data.data.license.delegation_infos!=null){
@@ -220,21 +222,25 @@ function renderChart(l,d){new Chart(mainChart,{ // render chart with estimated v
     datasets:[{
       label:'veCARV',
       data:d,
-      borderWidth:1,
       backgroundColor:'#824dff',
-      borderColor:'#ffffff'
+      borderColor:'#ffffff',
+      borderWidth:1
     }]
   }});}
 
 function toggleChart(){ // show/hide chart
+if(dataToShow){
   if (mainChart.classList.length==2){
-    toggleChartBtn.innerHTML='Hide chart';
-    toggleChartBtn.style.backgroundColor='var(--purple)';
-    toggleChartBtn.style.color='#fff';
+    mainChart.style.transform='translateX(0px)';
+    mainChart.style.filter='opacity(1)';
+    toggleChartArrow.innerHTML='<i class="fa fa-angle-right" aria-hidden="true"></i>';
   } else {
-    toggleChartBtn.innerHTML='Show chart';
-    toggleChartBtn.style.backgroundColor='var(--lightDark)';
-    toggleChartBtn.style.color='var(--purple)';
+    mainChart.style.transform='translateX(200%)';
+    mainChart.style.filter='opacity(0)';
+    toggleChartArrow.innerHTML='<i class="fa fa-angle-left" aria-hidden="true"></i>';
   }
   mainChart.classList.toggle('hidden');
 }
+}
+
+ 
