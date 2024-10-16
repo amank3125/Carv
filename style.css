@@ -11,6 +11,7 @@
 }
 * {
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  /* border: 1px white solid; */
 }
 body{
   padding: 0;
@@ -155,9 +156,13 @@ body{
   color: white;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
+  z-index: 10;
 }
 .fetch-btn:hover{
  box-shadow: var(--shadow);
+}
+.fetch-btn:focus {
+  transform: scale(1.1);
 }
 .flexboxDiv {
   width: var(--width);
@@ -172,6 +177,8 @@ body{
   align-self: center; 
   grid-area: flexboxDiv; 
   overflow: hidden;
+  z-index: 10;
+  background-image: var(--bg);
 }
 .toggleChart {
   background-color: var(--lightDark);
@@ -269,13 +276,12 @@ body{
   text-align: center;
   margin-top: 10px;
   width: 100%;
-
   justify-self: center; 
   align-self: end; 
   grid-area: disclaimer; 
 }
 /* Loader starts */
-.loader {
+.loader, .loader1, .loader2 {
   width: 12px;
   height: 12px;
   border: 2px solid #FFF;
@@ -337,7 +343,9 @@ body{
     align-content: space-between;
     justify-content: center;
     height:90vh;
-    width: 100vw
+    width: 100vw;
+    background-color: #22202b;
+    
   }
   .addressContainer {
     width:58dvw;
@@ -354,6 +362,9 @@ body{
     width: 85%;
     font-size: 1em;
     padding: 5px;
+    z-index: 2;
+
+    animation-delay: 2s;
   }
   .flexboxDiv h1 {
     font-size: 1.2em;
@@ -402,3 +413,39 @@ body{
     right: -5%;
   }
 }
+
+
+.wand, .wandDust {
+  position:absolute;
+  top:5%;
+  left:55vw;
+  margin: 0;
+  padding: 0;
+  color: var(--purple);
+  font-size: 2.5em;
+  text-shadow: 0px 0px 30px #824dff;
+  offset-path:path("M250 0c605-110 812 790 105 639");
+  opacity: 0;
+  border: none;
+  display: none;
+}
+.animate {
+  opacity: 1;
+  display: block;
+  animation:animate 2s ease-in-out forwards;
+}
+.glow {
+  animation-delay: 2s;
+  animation: glow 2s forwards ease-in-out;
+}
+@keyframes animate {
+    to {
+      offset-distance:100%;
+      /* transform: scale(2); */
+    }
+  }
+@keyframes glow {
+    100% {
+      box-shadow: var(--shadow);
+    }
+  }

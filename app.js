@@ -1,13 +1,15 @@
 const walletAddress = document.querySelector('.walletAddress');
 const carvPerDay = document.querySelector('.carvPerDay');
 const fetchBtn = document.querySelector('.fetch-btn');
+const wand = document.querySelector('.wand');
+const wandDust = document.querySelector('.wandDust');
 const resultContainer = document.querySelector('.resultContainer');
 const tokenId = document.querySelector('.token_id');
 const delegateTo = document.querySelector('.delegate_to');
 const totalRewards = document.querySelector('.total_rewards');
-const walletStatus = document.querySelector('.walletStatus');
+const unclaimedvecarv = document.querySelector('.unclaimedvecarv');
+const balancevecarv = document.querySelector('.balancevecarv');
 const flexboxDiv = document.querySelector('.flexboxDiv');
-const uptimeRate = document.querySelector('.uptime_rate');
 const toggleChartArrow = document.querySelector('.toggleChartArrow');
 const nodeAddress = document.querySelector('.nodeAddress');
 const nodeStatus = document.querySelector('.nodeStatus');
@@ -31,24 +33,24 @@ const getMonthShortName = (monthNumber) => new Date(0, monthNumber - 1).toLocale
 
 
 function resetValues() {   // reset all values to default
+tokenId.value='';         
 walletAddress.value='';         
 delegateTo.textContent = '';
 totalRewards.textContent = '';
-walletStatus.textContent = '';
-uptimeRate.textContent = '';
+balancevecarv.textContent = '';
+unclaimedvecarv.textContent = '';
 nodeAddress.textContent = '';
 nodeStatus.textContent = '';
+nodeStatus.classList.add('hidden')
 votingPower.textContent = '';
 receivedDelegations.textContent = '';
 nodeCommission.textContent = '';
 nodeUptimeRate.textContent = '';
-nodeStatus.classList.add('hidden');
-walletStatus.classList.add('hidden');
 hideLoaders(1);
 hideLoaders(2);
 dataToShow=false;
-
 }
+
 function callError(e){                // show error message
   errorMsg.textContent=e;
   flexboxDiv.style.filter='blur(10px)';
@@ -82,18 +84,20 @@ fetchBtn.addEventListener('click',  () => { // call main fetch func.
       callError('Please enter a valid wallet address');
       return;
     } else if (regex.test(walletAdd)) {
-      fetchData();
+      // fetchData();      //temp disable fetchdata on fetchBtn click
 }else{
   callError('Invalid wallet address!')
 }});
 
 function callLoaders(){ // show all loaders
   loaders1.forEach(element => {
-    element.classList.remove('hidden') ;   
+    element.classList.remove('hidden') ;
   });
   loaders2.forEach(element => {
     element.classList.remove('hidden') ;   
   });
+  wand.classList.add('animate')
+  wandDust.classList.add('animate')
   // loaders.classList.remove('.hidden');
 }
 function hideLoaders(e){ // hide all loaders
@@ -106,6 +110,8 @@ function hideLoaders(e){ // hide all loaders
       element.classList.add('hidden') ;   
     });
   }
+  wand.classList.remove('animate')
+  wandDust.classList.remove('animate')
   // loaders.classList.remove('.hidden');
 }
 
@@ -197,6 +203,8 @@ function fetchData(){ // main fetch func.
         })
         .catch(err=>console.log(err));
 }
+
+
 const chartLabels = [];
 const chartData = [];
 

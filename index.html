@@ -7,13 +7,16 @@
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="timeline.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://kit.fontawesome.com/6f5fc009a5.js" crossorigin="anonymous"></script>
 </head>
 <body>
   <div class="header">
     <img src="logo.png" height="40px" class="carvLogo">
     <div class="addressContainer">
-      <input type="text" class="walletAddress" placeholder="Enter licensed wallet address" value="">
+      <input type="text" class="walletAddress" placeholder="Enter licensed wallet address" value=""><i class="fa-solid fa-wand-sparkles wand"></i>
+      <iframe class="wandDust" src="https://lottie.host/embed/9154e516-1a16-4959-a561-654aad8dcdcd/frHWmqI1jC.lottie"></iframe>
       <button class="fetch-btn"><i class="fa fa-search" aria-hidden="true"></i></button>
+        
     </div>
     <p class="carvPerDay">veCARV/day: <span></span><span class="loader"></span></p>
     <a class="version"> v1.5.3</a>
@@ -29,12 +32,12 @@
         <p>Token ID: <span class="token_id"><span class="loader1 hidden"></span></span></p>
         <p>Delegate To: <span class="delegate_to"><span class="loader1 hidden"></span></span></p>
         <p>Total Rewards: <span class="total_rewards"><span class="loader1 hidden"></span></span></p>
-        <p>Status: <span class="walletStatus"><span class="loader1 hidden"></span></span></p>
-        <p>Uptime Rate: <span class="uptime_rate"><span class="loader1 hidden"></span></span></p>
+        <p>Unclaimed: <span class="unclaimedvecarv"><span class="loader1 hidden"></span></span></p>
+        <p>Balance: <span class="balancevecarv"><span class="loader1 hidden"></span></span></p>
       </div>
       <div class="nodeStatusContainer">
         <h1>Node Status</h1>
-        <p>Node Address:<span class="nodeAddress"><span class="loader2 hidden"></span></span></p>
+        <p>Node Address: <span class="nodeAddress"><span class="loader2 hidden"></span></span></p>
         <p>Node Status: <span class="nodeStatus hidden"></span><span class="loader2 hidden"></span></p>
         <p>Voting Power: <span class="votingPower"><span class="loader2 hidden"></span></span></p>
         <p>Received Delegations: <span class="receivedDelegations"><span class="loader2 hidden"></span></span></p>
@@ -89,5 +92,6 @@
 </div>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
   <script src="app.js"></script>
+  <script src="test.js"></script>
 </body>
 </html>
