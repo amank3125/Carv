@@ -20,12 +20,11 @@ const nodeUptimeRate = document.querySelector('.nodeUptimeRate');
 const errorContainer = document.querySelector('.errorContainer');
 const errorMsg = document.querySelector('.errorMsg');
 const errorClose = document.querySelector('.errorClose');
-const loaders1 = document.querySelectorAll('.loader1')
-const loaders2 = document.querySelectorAll('.loader2')
-const mainChart = document.querySelector('.mainChart')
+const loaders1 = document.querySelectorAll('.loader1');
+const loaders2 = document.querySelectorAll('.loader2');
 const regex = /^(0x)?[0-9a-fA-F]{40}$/;
 let veCARV=0;
-let dataToShow = false;
+let dataToShow = true;
 const currentMonthNumber = new Date().getMonth() + 1;
 const remainingDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate() - new Date().getDate();
 const getMonthShortName = (monthNumber) => new Date(0, monthNumber - 1).toLocaleString('default', { month: 'short' });
@@ -224,7 +223,7 @@ const chartData = [];
   }renderChart(chartLabels,chartData);
 };
 
-function renderChart(l,d){new Chart(mainChart,{ // render chart with estimated values
+function renderChart(l,d){new Chart(carvInfo,{ // render chart with estimated values
   type:'line',
   data:{labels:l,
     datasets:[{
@@ -236,19 +235,18 @@ function renderChart(l,d){new Chart(mainChart,{ // render chart with estimated v
     }]
   }});}
 
-function toggleChart(){ // show/hide chart
+function toggleChart(){ // show/hide veCARV projection chart (old)
 if(dataToShow){
-  if (mainChart.classList.length==2){
-    mainChart.style.transform='translateX(0px)';
-    mainChart.style.filter='opacity(1)';
+  if (carvInfo.classList.length==2){
+    carvInfo.style.transition='0.3s ease-in-out';
+    carvInfo.style.transform='translateX(0px)';
+    carvInfo.style.filter='opacity(1)';
     toggleChartArrow.innerHTML='<i class="fa fa-angle-right" aria-hidden="true"></i>';
   } else {
-    mainChart.style.transform='translateX(200%)';
-    mainChart.style.filter='opacity(0)';
+    carvInfo.style.transition='0.3s ease-in-out';
+    carvInfo.style.transform='translateX(200%)';
+    carvInfo.style.filter='opacity(0)';
     toggleChartArrow.innerHTML='<i class="fa fa-angle-left" aria-hidden="true"></i>';
   }
-  mainChart.classList.toggle('hidden');
-}
-}
-
- 
+  carvInfo.classList.toggle('hidden');
+}};
