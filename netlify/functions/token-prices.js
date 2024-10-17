@@ -1,7 +1,7 @@
 exports.handler = async function(event, context) {
     const fetch = (await import('node-fetch')).default;  // Use dynamic import
     
-    const cmcKey = process.env.CMC_API_KEY;
+    const cmcKey = process.env.cmcKey;
   
     return fetch('https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=carv&convert=USD', {
       headers: {
