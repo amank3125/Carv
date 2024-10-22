@@ -24,7 +24,7 @@ const loaders1 = document.querySelectorAll('.loader1');
 const loaders2 = document.querySelectorAll('.loader2');
 const regex = /^(0x)?[0-9a-fA-F]{40}$/;
 let veCARV=0;
-let dataToShow = true;
+let carvInWallet = 0;
 const currentMonthNumber = new Date().getMonth() + 1;
 const remainingDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate() - new Date().getDate();
 const getMonthShortName = (monthNumber) => new Date(0, monthNumber - 1).toLocaleString('default', { month: 'short' });
@@ -47,7 +47,6 @@ nodeCommission.textContent = '';
 nodeUptimeRate.textContent = '';
 hideLoaders(1);
 hideLoaders(2);
-dataToShow=false;
 }
 
 function callError(e){                // show error message
@@ -77,27 +76,20 @@ document.addEventListener('DOMContentLoaded', () => { // fetch daily veCARV rate
   .catch(err=>console.log(err));
 });
 
-fetchBtn.addEventListener('click',  () => { // call main fetch func.
-    const walletAdd = walletAddress.value.trim();
-    if (!walletAdd) {
-      callError('Please enter a valid wallet address');
-      return;
-    } else if (regex.test(walletAdd)) {
-      // fetchData();      //temp disable fetchdata on fetchBtn click
-}else{
-  callError('Invalid wallet address!')
-}});
 
 function callLoaders(){ // show all loaders
   loaders1.forEach(element => {
-    element.classList.remove('hidden') ;
+    element.classList.remove('hidden');
   });
   loaders2.forEach(element => {
-    element.classList.remove('hidden') ;   
+    element.classList.remove('hidden');
   });
   wand.classList.add('animate')
   wandDust.classList.add('animate')
-  // loaders.classList.remove('.hidden');
+  setTimeout(()=>{
+    wand.classList.add('hidden')
+    wandDust.classList.add('hidden')
+  },2200)
 }
 function hideLoaders(e){ // hide all loaders
   if(e==1){
@@ -111,96 +103,81 @@ function hideLoaders(e){ // hide all loaders
   }
   wand.classList.remove('animate')
   wandDust.classList.remove('animate')
-  // loaders.classList.remove('.hidden');
 }
+
+  fetchBtn.addEventListener('click',  () => {
+  console.clear();
+  const walletAdd = walletAddress.value.trim();
+      if (!walletAdd) {
+        callError('Please enter a valid wallet address');
+        return;
+      } else if (regex.test(walletAdd)) {
+          fetchData();
+      }
+   else {
+    callError('Invalid wallet address!')
+  }});
 
 function fetchData(){ // main fetch func.
   callLoaders();
-  const walletAdd = walletAddress.value.trim();
-  fetch(`https://interface.carv.io/explorer_alphanet/client_info?wallet_addr=${walletAdd}`)
-      .then(resp=>resp.json())
-      .then(data=>{
-        hideLoaders(1);
-        if(data.data.delegation_infos==null){
-          delegateTo.textContent = "self";
-          tokenId.innerHTML = "none";
-          totalRewards.textContent = data.data.total_rewards+" veCARV";
-          if(data.data.status=='active'){
-            walletStatus.textContent = data.data.status;
-            walletStatus.style = `border: 1px solid var(--green);background-color:#0d3b2d;color: var(--green);`
-          }else {
-            walletStatus.style = `border: 1px solid var(--red);background-color:var(--darkred);color: var(--red);`
-          }
-          uptimeRate.textContent = data.data.uptime_rate;
-        } else {
-          if(data.data.status=='active'){
-            walletStatus.classList.remove('hidden');
-            walletStatus.textContent = data.data.status;
-            walletStatus.style = `border: 1px solid var(--green);background-color:#0d3b2d;color: var(--green);`
-          }else {
-            walletStatus.classList.remove('hidden');
-            walletStatus.style = `border: 1px solid var(--red);background-color:var(--darkred);color: var(--red);`
-          }
-          delegateAddress=data.data.delegation_infos[0].delegate_to;
-          tokenId.innerHTML = data.data.delegation_infos[0].token_id;
-          delegateTo.textContent = delegateAddress.slice(0, 4) + '...' + delegateAddress.slice(-4); //shorten long address
+      const walletAdd = walletAddress.value.trim();
+      licenses = 0;
+      fetch(`https://interface.carv.io/explorer/vecarv_infos?wallet_address=${walletAdd}`).then(resp=>resp.json()).then(data=>{
+          licenses = data.data.claim_params.token_ids;
+          if(!licenses){
+              callError('No License found for this wallet');
+          } else {
+          tokenId.innerHTML = data.data.claim_params.token_ids[0];
           totalRewards.textContent = Number(data.data.total_rewards).toFixed(2)+" veCARV";
-          estimateRewards(data.data.total_rewards);
-          dataToShow=true;
-          walletStatus.textContent = data.data.status;
-          uptimeRate.textContent = data.data.uptime_rate;
-          delegateTo.addEventListener('mouseenter', function() {
-            delegateTo.setAttribute('title', delegateAddress); // Set full text as tooltip
-          });
-          delegateTo.addEventListener('mouseleave', function() {
-            delegateTo.removeAttribute('title'); // Set full text as tooltip
-          });
-          delegateTo.addEventListener('copy', function(event) {
-            // Prevent default copy behavior
-            event.preventDefault();
-            // Copy full text to clipboard
-            const fullTextToCopy = delegateTo.getAttribute('data-fulltext');
-            if (window.clipboardData) {
-              window.clipboardData.setData('Text', delegateAddress);
-            } else {
-              event.clipboardData.setData('text/plain', delegateAddress);
-            }
-          })}})
-      .catch(err=>console.log(err))
-      fetch(`https://interface.carv.io/explorer_alphanet/delegation?wallet_addr=${walletAdd}&page_size=3000`)
-        .then(resp=>resp.json())
-        .then(data=>{
-          hideLoaders(2);
-          if(data.data.license.licenses==0){
-            walletStatus.style='none';
-            callError('No License found for this wallet');
-            } else {
-          if(data.data.license.delegation_infos!=null){
-            flexboxDiv.style.filter='none';
-            console.log('1----------------');
-            delegateAddress=data.data.license.delegation_infos[0].delegate_to;
-              for(i=0;i<data.data.verifier_list.length;i++){
-                if(delegateAddress==data.data.verifier_list[i].address){
-                nodeAddress.textContent=delegateAddress.slice(0, 4) + '...' + delegateAddress.slice(-4); //shorten long address
-                nodeStatus.textContent=`${data.data.verifier_list[i].status}`;
-                  if(data.data.verifier_list[i].status=="active"){
-                  nodeStatus.classList.remove('hidden');
-                  nodeStatus.style = `border: 1px solid var(--green);background-color:#0d3b2d;color: var(--green);`
-                  } else {
-                  nodeStatus.classList.remove('hidden');
-                  nodeStatus.style = `border: 1px solid var(--red);background-color:var(--darkred);color: var(--red);`
-                  }
-                  votingPower.textContent=data.data.verifier_list[i].voting_power;
-                  receivedDelegations.textContent=data.data.verifier_list[i].received_delegations;
-                  nodeCommission.textContent=data.data.verifier_list[i].commission;
-                  nodeUptimeRate.textContent=data.data.verifier_list[i].uptime_rate;
-              break;
-            }}}
-          else{
-            console.log('----------------2');
-          }}
+          balancevecarv.textContent = Number(data.data.balance).toFixed(2)+" veCARV"
+          unclaimedvecarv.textContent = Number(data.data.unclaimed_rewards).toFixed(2)+" veCARV";
+          carvInWallet = Number(data.data.total_rewards);
+          if(!tokenStats.innerHTML.includes('Unclaimed Rewards')){
+            tokenStats.innerHTML += `<div class="card"><p class="cardLabel">Unclaimed Rewards <i class="fa-solid fa-hand-holding-dollar"></i></p><p class="cardValue">$${(carvInWallet*carvPrice).toFixed(2)}</p></div>`;
+          }
+  }}).catch(err=>console.log(err));
+  
+  fetch(`https://interface.carv.io/explorer/delegation?wallet_addr=${walletAdd}&page_size=2000`).then(resp=>resp.json()).then(data=>{
+      if(!licenses){} else {
+      delegateAddress = data.data.license.delegation_infos[0].delegate_to;
+      const filteredVerifier = data.data.verifier_list.filter(verifier => verifier.address.toLowerCase() === delegateAddress.toLowerCase());
+      nodeAddress.textContent=delegateAddress.slice(0, 4) + '...' + delegateAddress.slice(-4);
+      nodeStatus.textContent=filteredVerifier[0].status;
+      votingPower.textContent=filteredVerifier[0].voting_power;
+      receivedDelegations.textContent=filteredVerifier[0].received_delegations;
+      nodeCommission.textContent=filteredVerifier[0].commission;
+      nodeUptimeRate.textContent=filteredVerifier[0].uptime_rate;
+      (function() { // styling
+          if(filteredVerifier[0].status=="active"){
+              nodeStatus.classList.remove('hidden');
+              nodeStatus.style = `border: 1px solid var(--green);background-color:#0d3b2d;color: var(--green);`
+              } else {
+              nodeStatus.classList.remove('hidden');
+              nodeStatus.style = `border: 1px solid var(--red);background-color:var(--darkred);color: var(--red);`
+              }
+      })();
+  
+      (function() {  //set delegate address to tooltip
+          delegateTo.textContent=delegateAddress.slice(0, 4) + '...' + delegateAddress.slice(-4);
+      delegateTo.addEventListener('mouseenter', function() {
+          delegateTo.setAttribute('title', delegateAddress); // Set full text as tooltip
+        });
+        delegateTo.addEventListener('mouseleave', function() {
+          delegateTo.removeAttribute('title'); // Set full text as tooltip
+        });
+        delegateTo.addEventListener('copy', function(event) {
+          // Prevent default copy behavior
+          event.preventDefault();
+          // Copy full text to clipboard
+          const fullTextToCopy = delegateTo.getAttribute('data-fulltext');
+          if (window.clipboardData) {
+            window.clipboardData.setData('Text', delegateAddress);
+          } else {
+            event.clipboardData.setData('text/plain', delegateAddress);
+          }
         })
-        .catch(err=>console.log(err));
+  })();
+  }}).catch(err=>console.log('delegate '+err));
 }
 
 
@@ -236,7 +213,6 @@ function renderChart(l,d){new Chart(carvInfo,{ // render chart with estimated va
   }});}
 
 function toggleChart(){ // show/hide veCARV projection chart (old)
-if(dataToShow){
   if (carvInfo.classList.length==2){
     carvInfo.style.transition='0.3s ease-in-out';
     carvInfo.style.transform='translateX(0px)';
@@ -249,4 +225,6 @@ if(dataToShow){
     toggleChartArrow.innerHTML='<i class="fa fa-angle-left" aria-hidden="true"></i>';
   }
   carvInfo.classList.toggle('hidden');
-}};
+};
+
+

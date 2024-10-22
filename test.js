@@ -1,17 +1,18 @@
+// unlinked from main app
+
+let carvInWallet = 0;
 fetchBtn.addEventListener('click',  () => {
-console.clear();
+  console.clear();
 const walletAdd = walletAddress.value.trim();
     if (!walletAdd) {
       callError('Please enter a valid wallet address');
       return;
     } else if (regex.test(walletAdd)) {
-        fetchDataNew()
+        fetchDataNew();
     }
  else {
   callError('Invalid wallet address!')
-}})
-
-
+}});
 
 function fetchDataNew() {
     callLoaders();
@@ -25,7 +26,8 @@ function fetchDataNew() {
         tokenId.innerHTML = data.data.claim_params.token_ids[0];
         totalRewards.textContent = Number(data.data.total_rewards).toFixed(2)+" veCARV";
         balancevecarv.textContent = Number(data.data.balance).toFixed(2)+" veCARV"
-        unclaimedvecarv.textContent = Number(data.data.unclaimed_rewards).toFixed(2)+" veCARV"
+        unclaimedvecarv.textContent = Number(data.data.unclaimed_rewards).toFixed(2)+" veCARV";
+        carvInWallet = Number(data.data.total_rewards);
 }}).catch(err=>console.log(err));
 
 fetch(`https://interface.carv.io/explorer/delegation?wallet_addr=${walletAdd}&page_size=2000`).then(resp=>resp.json()).then(data=>{
@@ -70,4 +72,4 @@ fetch(`https://interface.carv.io/explorer/delegation?wallet_addr=${walletAdd}&pa
 })();
 }}).catch(err=>console.log('delegate '+err));
 }
-  
+tokenStats.innerHTML += `<div class="card"><p class="cardLabel">Unclaimed Rewards <i class="fas fa-chart-line"></i></p><p class="cardValue">$${(carvInWallet*carvPrice).toFixed(2)}</p></div>`;

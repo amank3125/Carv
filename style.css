@@ -13,6 +13,7 @@
 * {
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   /* border: 1px white solid; */
+  cursor: url('./cursor.png') 16 16, auto;
 }
 body{
   padding: 0;
@@ -162,9 +163,7 @@ body{
 .fetch-btn:hover{
  box-shadow: var(--shadow);
 }
-.fetch-btn:focus {
-  transform: scale(1.1);
-}
+
 .flexboxDiv {
   width: var(--width);
   border: 2px var(--purple) solid;
@@ -248,6 +247,8 @@ body{
   flex-direction: column;
   z-index: 10;
   background-image: var(--bg);
+  background-size: 200%;
+  background-position: right;
 }
 .carvInfo:hover{
   box-shadow: 0px 0px 30px 10px #824dff20;
@@ -283,6 +284,7 @@ span.percentChange.red{
   grid-template-columns: 1fr 1fr;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
+  cursor:url('./carv-token.png');
 }
 .tokenStats .cardLabel {
   font-weight: 300;
@@ -291,12 +293,30 @@ span.percentChange.red{
 }
 .tokenStats .cardValue {
   font-weight: 500;
-  font-size: 18px;
+  font-size: 16px;
+  margin: 0px;
 }
 .tokenStats .card {
-  padding: 10px 5px 10px 5px;
-  border:1px solid var(--purple);
+  padding: 0px 8px 0px 8px;
   border-radius: 5px;
+  border:1px solid var(--lightDark);
+  background-color: var(--lightDark);
+  transition: 0.3s ease-in-out all;
+}
+.tokenStats .card:hover {
+  border:1px solid var(--purple);
+}
+.carvInfo .cardError {
+  font-size: 18px;
+  color: var(--red);
+}
+.carvInfo .cardError i {
+  border: 1px var(--red) solid;
+  border-radius: 100%;
+  font-size: 36px;
+  color: var(--red);
+  padding: 10px 23px;
+  margin-bottom: 30px;
 }
 .resultContainer{
   /* border: 1px rgb(176, 255, 136) solid; */
@@ -367,36 +387,30 @@ span.percentChange.red{
 /* CSS For mobile devices */
 
 @media only screen and (max-width: 450px) {
+  body {
+    overflow-x: hidden;
+    overflow-y: scroll;
+    touch-action: manipulation;
+  }
   p {
     font-size: 0.8em;
   }
   .header {
     display: grid; 
     height: 6vh;
-    padding: 15px 10px 15px 10px;
+    padding: 35px 10px 15px 10px;
+    z-index: 1;
   }
   .carvLogo {
     max-width: 100%;
     height: auto;
+    z-index: 1;
   }
   .errorContainer {
     width: 60%;
     height: 40px;
+    z-index: 2;
   }
-  /* .errorContainer::after{
-    content: "X";
-    position: absolute;
-    top: -10px;
-    right: -10px;
-    border: 1px var(--red) solid;
-    border-radius: 50%;
-    height: 20px;
-    width: 20px;
-    text-align: center;
-    background-color: var(--darkred);
-    padding: auto;
-    cursor: pointer;
-  } */
   .main {
     display: grid;
     place-items: center;
@@ -404,19 +418,21 @@ span.percentChange.red{
     align-items: center;
     align-content: space-between;
     justify-content: center;
-    height:90vh;
-    width: 100vw;
+    max-height:100vh;
+    width: 100%;
     background-color: #22202b;
-    
   }
   .addressContainer {
-    width:58dvw;
-    z-index: 1;
+    width:50dvw;
     padding-left: 15px;
+    z-index: 1;
   }
   .walletAddress {
     font-size: 0.8em;
     padding-left: 8px;
+  }
+  .fetch-btn {
+    width: 15dvw;
   }
   .flexboxDiv {
     align-items: start;
@@ -424,16 +440,16 @@ span.percentChange.red{
     width: 85%;
     font-size: 1em;
     padding: 5px;
-    z-index: 2;
-
+    z-index: 0;
     animation-delay: 2s;
   }
   .flexboxDiv h1 {
     font-size: 1.2em;
   }
-  .toggleChart {
-    margin-top: 10px;
-    width: calc(var(--width)/1.7);
+  .toggleChartArrow {
+    width: calc(var(--width)/3.2);
+    top: 75%;
+    right: -5%;
   }
   .chartDiv{
     grid-area:disclaimer;
@@ -459,9 +475,11 @@ span.percentChange.red{
   .carvPerDay{
     text-align: right;
     font-size: 8px;
+    z-index: 1;
   }
   .version {
-    display: none;;
+    display: none;
+    z-index: 1;
   }
   .chartDiv {
     height: 30dvh;
@@ -469,10 +487,6 @@ span.percentChange.red{
     margin: 0;
     margin-top: -5%;
     transform: scale(0.85);
-  }
-  .toggleChartArrow{
-    top: 75%;
-    right: -5%;
   }
 }
 
