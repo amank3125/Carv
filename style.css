@@ -318,6 +318,35 @@ span.percentChange.red{
   padding: 10px 23px;
   margin-bottom: 30px;
 }
+.rewardHistoryBtn {
+  background: none;
+  border: none;
+  color: var(--purple);
+  font-size: 14px;
+  grid-column: span 2;
+  padding-block:10px 5px;
+  cursor: pointer;
+  transition: 0.3s ease-in-out all;
+}
+.backToStatsBtn {
+  background: none;
+  border: none;
+  color: var(--purple);
+  font-size: 14px;
+  grid-column: span 3;
+  padding-block:10px 5px;
+  cursor: pointer;
+  transition: 0.3s ease-in-out all;
+}
+.rewardHistoryBtn:hover{
+  transform: translateX(10px);
+}
+.rewardHistory {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
 .resultContainer{
   /* border: 1px rgb(176, 255, 136) solid; */
   width: 50%;
@@ -326,6 +355,36 @@ span.percentChange.red{
   flex-direction: column;
   align-items: start;
   border-right: 1px solid var(--purple);
+}
+.rewardCard {
+  border-left: var(--purple) solid 5px;
+  border-block: var(--lightDark) solid 1px;
+  border-right: var(--lightDark) solid 1px;
+  height: 60px;
+  border-radius: 5px;
+  padding: 0px 15px 5px 15px;
+  transition: 0.3s ease-in-out all;
+  background-color: var(--lightDark);
+}
+.rewardHistory h3 {
+  grid-column: span 3;
+  justify-self: center;
+  margin-block: 5px 10px;
+}
+.rewardCard:hover {
+  border-left: var(--purple) solid 5px;
+  border-block: var(--purple) solid 1px;
+  border-right: var(--purple) solid 1px;
+}
+p.rewardDate{
+  font-size: 10px;
+  color: gray;
+  margin-bottom: 0px;
+}
+p.rewardTokens {
+  font-size: 18px;
+  color: var(--purple);
+  margin-block: 10px;
 }
 .resultContainer h1 {
   align-self: center;

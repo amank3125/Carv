@@ -22,6 +22,8 @@ const errorMsg = document.querySelector('.errorMsg');
 const errorClose = document.querySelector('.errorClose');
 const loaders1 = document.querySelectorAll('.loader1');
 const loaders2 = document.querySelectorAll('.loader2');
+const rewardHistory = document.querySelector('.rewardHistory');
+const infoHeader = document.querySelector('.infoHeader');
 const regex = /^(0x)?[0-9a-fA-F]{40}$/;
 let veCARV=0;
 let carvInWallet = 0;
@@ -70,9 +72,13 @@ walletAddress.addEventListener('keypress',(e)=>{ // call main fetch func. when e
 })
 
 document.addEventListener('DOMContentLoaded', () => { // fetch daily veCARV rate
-  fetch('https://faas-ams3-2a2df116.doserverless.co/api/v1/web/fn-d38dd739-354e-43bf-b096-1c57b14c6512/default/carv')
+  fetch('/.netlify/functions/getRewards')
   .then(resp=>resp.json())
-  .then(data=>{carvPerDay.textContent=`veCARV/day: ${Number(data.perDay).toFixed(2)}`; veCARV=Number(data.perDay);})
+  .then(data=>{
+    perDay = data.average;
+    carvPerDay.textContent=`veCARV/day: ${perDay.toFixed(2)}`;
+    veCARV=perDay;
+  })
   .catch(err=>console.log(err));
 });
 
@@ -106,10 +112,9 @@ function hideLoaders(e){ // hide all loaders
 }
 
   fetchBtn.addEventListener('click',  () => {
-  console.clear();
   const walletAdd = walletAddress.value.trim();
       if (!walletAdd) {
-        callError('Please enter a valid wallet address');
+        callError('Invalid wallet address!');
         return;
       } else if (regex.test(walletAdd)) {
           fetchData();
@@ -118,27 +123,34 @@ function hideLoaders(e){ // hide all loaders
     callError('Invalid wallet address!')
   }});
 
+function seeHistory(e){
+  const encodedAddress = encodeURIComponent(e);
+  fetch(`/.netlify/functions/getRewardsForWallet?addr=${encodedAddress}`)
+  .then(resp=>resp.json())
+  .then(data=>{
+    tokenStats.classList.add('hidden');
+    infoHeader.classList.add('hidden');
+    rewardHistory.classList.remove('hidden');
+      for(i=0;i<data.history.length;i++){
+        let date = new Date(data.history[i].timestamp*1000);
+        rewardHistory.innerHTML += `<div class="rewardCard"><p class="rewardDate">${date.getUTCDate()} ${date.toLocaleString('en-US', { month: 'short' })}, ${date.getUTCFullYear()}</p><p class="rewardTokens">${Number(data.history[i].amount).toFixed(2)}</p></div>`;
+      }
+        rewardHistory.innerHTML += `<button class="backToStatsBtn" onclick="hideHistory()">← Back to Stats</button>`;
+      })
+  .catch(err=>console.log(err));
+}
+function hideHistory(){
+  rewardHistory.innerHTML = "";
+  tokenStats.classList.remove('hidden');
+  infoHeader.classList.remove('hidden');
+  rewardHistory.classList.add('hidden');
+}
 function fetchData(){ // main fetch func.
+  const walletAdd = walletAddress.value.trim();
   callLoaders();
-      const walletAdd = walletAddress.value.trim();
-      licenses = 0;
-      fetch(`https://interface.carv.io/explorer/vecarv_infos?wallet_address=${walletAdd}`).then(resp=>resp.json()).then(data=>{
-          licenses = data.data.claim_params.token_ids;
-          if(!licenses){
-              callError('No License found for this wallet');
-          } else {
-          tokenId.innerHTML = data.data.claim_params.token_ids[0];
-          totalRewards.textContent = Number(data.data.total_rewards).toFixed(2)+" veCARV";
-          balancevecarv.textContent = Number(data.data.balance).toFixed(2)+" veCARV"
-          unclaimedvecarv.textContent = Number(data.data.unclaimed_rewards).toFixed(2)+" veCARV";
-          carvInWallet = Number(data.data.total_rewards);
-          if(!tokenStats.innerHTML.includes('Unclaimed Rewards')){
-            tokenStats.innerHTML += `<div class="card"><p class="cardLabel">Unclaimed Rewards <i class="fa-solid fa-hand-holding-dollar"></i></p><p class="cardValue">$${(carvInWallet*carvPrice).toFixed(2)}</p></div>`;
-          }
-  }}).catch(err=>console.log(err));
-  
-  fetch(`https://interface.carv.io/explorer/delegation?wallet_addr=${walletAdd}&page_size=2000`).then(resp=>resp.json()).then(data=>{
-      if(!licenses){} else {
+  fetch(`https://interface.carv.io/explorer/delegation?wallet_addr=${walletAdd}&page_size=2000`).then(resp=>resp.json()).then((data)=>{
+    let licenses = data.data.license.licenses;
+      if(licenses==0){callError('No License found for this wallet')} else {
       delegateAddress = data.data.license.delegation_infos[0].delegate_to;
       const filteredVerifier = data.data.verifier_list.filter(verifier => verifier.address.toLowerCase() === delegateAddress.toLowerCase());
       nodeAddress.textContent=delegateAddress.slice(0, 4) + '...' + delegateAddress.slice(-4);
@@ -177,40 +189,22 @@ function fetchData(){ // main fetch func.
           }
         })
   })();
-  }}).catch(err=>console.log('delegate '+err));
+  fetch(`https://interface.carv.io/explorer/vecarv_infos?wallet_address=${walletAdd}`).then(resp=>resp.json()).then(data=>{
+    if(licenses==0){
+        callError('No License found for this wallet');
+    } else {
+    tokenId.innerHTML = data.data.claim_params.token_ids;
+    totalRewards.textContent = Number(data.data.total_rewards).toFixed(2)+" veCARV";
+    balancevecarv.textContent = Number(data.data.balance).toFixed(2)+" veCARV"
+    unclaimedvecarv.textContent = Number(data.data.unclaimed_rewards).toFixed(2)+" veCARV";
+    carvInWallet = Number(data.data.total_rewards);
+    if(!tokenStats.innerHTML.includes('Unclaimed Rewards')){
+      tokenStats.innerHTML += `<div class="card"><p class="cardLabel">Unclaimed Rewards <i class="fa-solid fa-hand-holding-dollar"></i></p><p class="cardValue">$${(carvInWallet*carvPrice).toFixed(2)}</p></div>
+      <button class="rewardHistoryBtn" onclick="seeHistory('${walletAdd}')">See Reward History →</button>`;}
+}}).catch(err=>{console.log(err);callError(err)});
+  }}).catch(err=>{console.log(err);callError(err)});
 }
 
-
-const chartLabels = [];
-const chartData = [];
-
-  function estimateRewards(e){ // estimate rewards for next 12 months
-    for(i=currentMonthNumber;chartLabels.length<12;i++){
-      chartLabels.push(getMonthShortName(i))
-    }
-    chartData[0]= +e+(veCARV*remainingDays);
-    for(i=1;i<chartLabels.length;i++){
-      if(i==5){  // rewards halving in 6 months
-        veCARV = veCARV/2;
-      }
-      const daysinMonth = new Date(new Date().getFullYear(), i, 0).getDate();
-      chartData[i] = chartData[i-1]+(veCARV*daysinMonth);
-      // console.log(chartLabels[i]+" - "+chartData[i])
-  // }console.log(chartData);
-  }renderChart(chartLabels,chartData);
-};
-
-function renderChart(l,d){new Chart(carvInfo,{ // render chart with estimated values
-  type:'line',
-  data:{labels:l,
-    datasets:[{
-      label:'veCARV',
-      data:d,
-      backgroundColor:'#824dff',
-      borderColor:'#ffffff',
-      borderWidth:1
-    }]
-  }});}
 
 function toggleChart(){ // show/hide veCARV projection chart (old)
   if (carvInfo.classList.length==2){
@@ -226,5 +220,4 @@ function toggleChart(){ // show/hide veCARV projection chart (old)
   }
   carvInfo.classList.toggle('hidden');
 };
-
 
