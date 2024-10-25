@@ -179,6 +179,7 @@ body{
   overflow: hidden;
   z-index: 10;
   background-image: var(--bg);
+  /* animation:showResultAnimation 3s forwards ease-in-out; */
 }
 .toggleChart {
   background-color: var(--lightDark);
@@ -366,7 +367,7 @@ span.percentChange.red{
   transition: 0.3s ease-in-out all;
   background-color: var(--lightDark);
 }
-.rewardHistory h3 {
+.rewardHistoryMain h3 {
   grid-column: span 3;
   justify-self: center;
   margin-block: 5px 10px;
@@ -453,6 +454,10 @@ p.rewardTokens {
   }
   p {
     font-size: 0.8em;
+  }
+  p.tokenPrice{
+    font-size: 1em;
+    margin-left: -50px;
   }
   .header {
     display: grid; 
@@ -579,6 +584,17 @@ p.rewardTokens {
       /* transform: scale(2); */
     }
   }
+@keyframes showResultAnimation {
+  0% {
+    height: 5%;
+    width: 5%;
+    border-radius: 50%;
+  }
+  100%{
+    height: auto;
+    width: 45%;
+  }
+}
 @keyframes glow {
     100% {
       box-shadow: var(--shadow);

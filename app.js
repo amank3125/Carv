@@ -22,10 +22,12 @@ const errorMsg = document.querySelector('.errorMsg');
 const errorClose = document.querySelector('.errorClose');
 const loaders1 = document.querySelectorAll('.loader1');
 const loaders2 = document.querySelectorAll('.loader2');
+const rewardHistoryMain = document.querySelector('.rewardHistoryMain');
 const rewardHistory = document.querySelector('.rewardHistory');
 const infoHeader = document.querySelector('.infoHeader');
 const regex = /^(0x)?[0-9a-fA-F]{40}$/;
 let veCARV=0;
+let historyData;
 let carvInWallet = 0;
 const currentMonthNumber = new Date().getMonth() + 1;
 const remainingDays = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate() - new Date().getDate();
@@ -122,28 +124,25 @@ function hideLoaders(e){ // hide all loaders
    else {
     callError('Invalid wallet address!')
   }});
-
-function seeHistory(e){
+async function seeHistory(e){
   const encodedAddress = encodeURIComponent(e);
-  fetch(`/.netlify/functions/getRewardsForWallet?addr=${encodedAddress}`)
-  .then(resp=>resp.json())
-  .then(data=>{
+  console.log('data',historyData);
+  if(!historyData){
+  await fetch(`/.netlify/functions/getRewardsForWallet?addr=${encodedAddress}`)
+  .then(resp=>resp.json()).then(data=>historyData = data).catch(err=>console.log(err));} 
     tokenStats.classList.add('hidden');
     infoHeader.classList.add('hidden');
-    rewardHistory.classList.remove('hidden');
-      for(i=0;i<data.history.length;i++){
-        let date = new Date(data.history[i].timestamp*1000);
-        rewardHistory.innerHTML += `<div class="rewardCard"><p class="rewardDate">${date.getUTCDate()} ${date.toLocaleString('en-US', { month: 'short' })}, ${date.getUTCFullYear()}</p><p class="rewardTokens">${Number(data.history[i].amount).toFixed(2)}</p></div>`;
-      }
-        rewardHistory.innerHTML += `<button class="backToStatsBtn" onclick="hideHistory()">← Back to Stats</button>`;
-      })
-  .catch(err=>console.log(err));
-}
+    rewardHistoryMain.classList.remove('hidden');
+      for(i=0;i<historyData.history.length;i++){
+        let date = new Date(historyData.history[i].timestamp*1000);
+        rewardHistory.innerHTML += `<div class="rewardCard"><p class="rewardDate">${date.getUTCDate()} ${date.toLocaleString('en-US', { month: 'short' })}, ${date.getUTCFullYear()}</p><div style="display: flex; align-items: center; gap: 5px;"><img src="carv-token.png" height="16px"></img><p class="rewardTokens">${Number(historyData.history[i].amount).toFixed(2)}</p></div></div>`;
+      }rewardHistory.innerHTML += `<button class="backToStatsBtn" onclick="hideHistory()">← Back to Stats</button>`;};
+
 function hideHistory(){
   rewardHistory.innerHTML = "";
   tokenStats.classList.remove('hidden');
   infoHeader.classList.remove('hidden');
-  rewardHistory.classList.add('hidden');
+  rewardHistoryMain.classList.add('hidden');
 }
 function fetchData(){ // main fetch func.
   const walletAdd = walletAddress.value.trim();
