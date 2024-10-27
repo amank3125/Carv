@@ -578,6 +578,16 @@ p.rewardTokens {
   animation-delay: 2s;
   animation: glow 2s forwards ease-in-out;
 }
+.toggleChartArrow::after {
+  content: '';
+  height: 10px;
+  width: 10px;
+  background-color: var(--red);
+  position: absolute;
+  top: 0;
+  border-radius: 50%;
+  left: 0;
+}
 @keyframes animate {
     to {
       offset-distance:100%;
